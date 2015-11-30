@@ -4,9 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/recorder_stop"
-    tools:context=".RecorderMainActivity"
+    tools:context=".TuneNoteActivity"
     tools:deviceIds="wear_round"
-    android:background="@drawable/recorder_stop">
+    android:background="@drawable/tune_note">
 
 </RelativeLayout>
