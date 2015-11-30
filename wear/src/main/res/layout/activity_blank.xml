@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/recorder_stop"
-    tools:context=".RecorderMainActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/blank"
+    tools:context=".BlankFragment"
     tools:deviceIds="wear_round"
-    android:background="@drawable/recorder_stop">
+    android:background="@drawable/blank">
 
 </RelativeLayout>

@@ -26,7 +26,7 @@ public class TunerMainActivity extends Activity implements View.OnClickListener,
     Button startRecordingButton, stopRecordingButton;
     File recordingFile;
     File file;
-    private static final String TAG = TuneActivity.class.getSimpleName();
+    private static final String TAG = TunerMainActivity.class.getSimpleName();
 
     boolean isRecording = false;
 
