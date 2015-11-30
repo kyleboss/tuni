@@ -25,6 +25,4 @@ public class MainActivity extends Activity {
         final GridViewPager mGridPager = (GridViewPager) findViewById(R.id.pager);
         mGridPager.setAdapter(new SampleGridPagerAdapter(this, getFragmentManager()));
     }
-
-
 }
