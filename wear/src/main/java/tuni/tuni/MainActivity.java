@@ -63,9 +63,6 @@ import android.widget.Toast;
  * Created by vasu on 11/19/15.
  */
 public class MainActivity extends Activity {
-    //here are the variables values that I used
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

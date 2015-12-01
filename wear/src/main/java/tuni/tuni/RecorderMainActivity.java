@@ -1,5 +1,6 @@
 package tuni.tuni;
 
+import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -33,7 +34,8 @@ import java.util.List;
 /**
  * Created by vasu on 11/19/15.
  */
-public class RecorderMainActivity {
+public class RecorderMainActivity extends Activity
+    implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
     //44100Hz is currently the only rate that is guaranteed to work on all devices
 //but other rates such as 22050, 16000, and 11025 may work on some devices.
 
@@ -120,16 +122,16 @@ public class RecorderMainActivity {
         startRecordingButton = (Button) this.findViewById(R.id.StartRecordingButton);
         stopRecordingButton = (Button) this.findViewById(R.id.StopRecordingButton);
 
-        startRecordingButton.setOnClickListener(this);
-        stopRecordingButton.setOnClickListener(this);
-    }
-
-    public void onClick(View v) {
-        if (v == startRecordingButton) {
-            startRecording();
-        } else if (v == stopRecordingButton) {
-            stopRecording();
-        }
+        startRecordingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startRecording();
+            }
+        });
+        stopRecordingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                stopRecording();
+            }
+        });
     }
 
     private void stopRecording() {

@@ -8,4 +8,58 @@
     tools:deviceIds="wear_round"
     android:background="@drawable/tuner_main">
 
+    <ImageButton
+        android:id="@+id/aButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/a_pressed"
+        android:background="@null"
+        android:visibility="invisible"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/bButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/b_pressed"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/dButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/d_pressed"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/eLowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e_low_pressed"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/eHighButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e_high_pressed"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/gButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/g_pressed"
+        android:scaleType="centerInside"
+        android:background="@null"
+        android:visibility="invisible" />
+
 </RelativeLayout>
