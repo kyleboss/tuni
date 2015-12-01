@@ -62,7 +62,7 @@ public class MetronomeMainActivity extends WearableActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long[] beats = {0, 100, 60000/value};
+                long[] beats = {0, 100, 1000/value};
                 vib.vibrate(beats, 0);
             }
         });
