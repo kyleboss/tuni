@@ -59,7 +59,7 @@ public class PitchComparison {
             }
         }
 
-        percentCloseness    = (pitch / octave[bestFitNoteIndex]) * 100;
+        percentCloseness    = pitch / octave[bestFitNoteIndex];
         outputNote          = noteNames[bestFitNoteIndex] + Integer.toString(bestFitOctave);
         return percentCloseness;
     }

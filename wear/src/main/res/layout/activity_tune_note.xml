@@ -8,4 +8,59 @@
     tools:context=".TuneNoteActivity"
     tools:deviceIds="wear_round">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Pluck String"
+        android:id="@+id/pluckText"
+        android:focusableInTouchMode="false"
+        android:visibility="visible"
+        android:textSize="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:textColor="#0f2885" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Tighten String"
+        android:id="@+id/tightenText"
+        android:focusableInTouchMode="false"
+        android:visibility="invisible"
+        android:textSize="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:textColor="#aa0000" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Loosen String"
+        android:id="@+id/loosenText"
+        android:focusableInTouchMode="false"
+        android:visibility="invisible"
+        android:textSize="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:textColor="#db6700" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Perfect!"
+        android:id="@+id/perfectText"
+        android:focusableInTouchMode="false"
+        android:visibility="invisible"
+        android:textSize="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:textColor="#0169ba" />
 </RelativeLayout>
