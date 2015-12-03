@@ -39,9 +39,11 @@ public class MetronomeFragment extends Fragment {
                 int beats = (int) (percentProgress * 220);
                 bpm.setText(String.valueOf(beats));
 
-                int sleepTime = 60000 / beats;
-                long[] pattern = {0, 100, sleepTime};
-                vib.vibrate(pattern, 0);
+                if (beats > 0) {
+                    int sleepTime = 60000 / beats;
+                    long[] pattern = {0, 100, sleepTime};
+                    vib.vibrate(pattern, 0);
+                }
             }
 
             @Override
