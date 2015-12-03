@@ -6,5 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MetronomeFragment"
     tools:deviceIds="wear_round"
-    android:background="@drawable/metronome_main">
+    android:background="@drawable/metronome">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/bpm"
+        android:focusableInTouchMode="false"
+        android:textSize="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:textColor="#002157" />
+
 </RelativeLayout>
