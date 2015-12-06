@@ -72,39 +72,42 @@ public class TuneFragment extends Fragment
         int iY = (int) event.getY();
 
         Intent intent = new Intent(getActivity(), TuneNoteActivity.class);
-
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (aBitmap.getPixel(iX, iY) != 0) {
-                aButton.setVisibility(View.VISIBLE);
-                intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.A);
-                startActivity(intent);
-                return true;
-            } else if (bBitmap.getPixel(iX, iY) != 0) {
-                bButton.setVisibility(View.VISIBLE);
-                intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.B);
-                startActivity(intent);
-                return true;
-            } else if (dBitmap.getPixel(iX, iY) != 0) {
-                dButton.setVisibility(View.VISIBLE);
-                intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.D);
-                startActivity(intent);
-                return true;
-            } else if (eHighBitmap.getPixel(iX, iY) != 0) {
-                eHighButton.setVisibility(View.VISIBLE);
-                intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.E_HIGH);
-                startActivity(intent);
-                return true;
-            } else if (eLowBitmap.getPixel(iX, iY) != 0) {
-                eLowButton.setVisibility(View.VISIBLE);
-                intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.E_LOW);
-                startActivity(intent);
-                return true;
-            } else if (gBitmap.getPixel(iX, iY) != 0) {
-                gButton.setVisibility(View.VISIBLE);
-                intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.G);
-                startActivity(intent);
-                return true;
+        try {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (iX < aBitmap.getWidth() && iY < aBitmap.getHeight() && aBitmap.getPixel(iX, iY) != 0) {
+                    aButton.setVisibility(View.VISIBLE);
+                    intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.A);
+                    startActivity(intent);
+                    return true;
+                } else if (iX < bBitmap.getWidth() && iY < bBitmap.getHeight() && bBitmap.getPixel(iX, iY) != 0) {
+                    bButton.setVisibility(View.VISIBLE);
+                    intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.B);
+                    startActivity(intent);
+                    return true;
+                } else if (iX < dBitmap.getWidth() && iY < dBitmap.getHeight() && dBitmap.getPixel(iX, iY) != 0) {
+                    dButton.setVisibility(View.VISIBLE);
+                    intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.D);
+                    startActivity(intent);
+                    return true;
+                } else if (iX < eHighBitmap.getWidth() && iY < eHighBitmap.getHeight() && eHighBitmap.getPixel(iX, iY) != 0) {
+                    eHighButton.setVisibility(View.VISIBLE);
+                    intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.E_HIGH);
+                    startActivity(intent);
+                    return true;
+                } else if (iX < eLowBitmap.getWidth() && iY < eLowBitmap.getHeight() && eLowBitmap.getPixel(iX, iY) != 0) {
+                    eLowButton.setVisibility(View.VISIBLE);
+                    intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.E_LOW);
+                    startActivity(intent);
+                    return true;
+                } else if (iX < gBitmap.getWidth() && iY < gBitmap.getHeight() && gBitmap.getPixel(iX, iY) != 0) {
+                    gButton.setVisibility(View.VISIBLE);
+                    intent.putExtra(TuneNoteActivity.NOTE, TuneNoteActivity.G);
+                    startActivity(intent);
+                    return true;
+                }
             }
+        } catch (Exception e) {
+
         }
 
         if(event.getAction() == MotionEvent.ACTION_UP ||
