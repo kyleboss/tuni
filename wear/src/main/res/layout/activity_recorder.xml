@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Record"
         android:id="@+id/textView"
-        android:layout_marginBottom="52dp"
+        android:paddingBottom="52dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textSize="20dp"
@@ -27,10 +27,11 @@
         android:src="@drawable/record_circle_selector"
         android:background="@null"
         android:visibility="visible"
-        android:scaleType="centerInside"
+        android:scaleType="center"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true" />
+        android:paddingTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="false" />
 
     <ImageButton
         android:id="@+id/recordSquareButton"
@@ -41,7 +42,7 @@
         android:visibility="invisible"
         android:scaleType="centerInside"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
+        android:paddingTop="40dp"
         android:layout_centerHorizontal="true" />
 
     <ImageView
