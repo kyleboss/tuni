@@ -20,20 +20,27 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.Channel;
 import com.google.android.gms.wearable.ChannelApi;
+import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
@@ -330,14 +337,14 @@ public class RecorderFragment extends Fragment
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
         DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
-        int minBufferSize = AudioRecord.getMinBufferSize(11025,
+        int minBufferSize = AudioRecord.getMinBufferSize(44100,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
 
         short[] audioData = new short[minBufferSize];
 
         AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                11025,
+                44100,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
                 minBufferSize);
@@ -358,13 +365,42 @@ public class RecorderFragment extends Fragment
         audioRecord.stop();
         try {
             dataOutputStream.close();
+            byte[] byteArrayOfSound = read(file);
+            PutDataMapRequest dataMap = PutDataMapRequest.create("/recording");
+            Asset asset = Asset.createFromBytes(byteArrayOfSound);
+            dataMap.getDataMap().putAsset("recording", asset);
+            PutDataRequest request = dataMap.asPutDataRequest();
+            PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
+                    .putDataItem(mGoogleApiClient, request);
+            Log.d(TAG, "SENT TO PHONE");
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+    public byte[] read(File file) throws IOException {
+
+        byte[] buffer = new byte[(int) file.length()];
+        InputStream ios = null;
+        try {
+            ios = new FileInputStream(file);
+            if (ios.read(buffer) == -1) {
+                throw new IOException(
+                        "EOF reached while trying to read the whole file");
+            }
+        } finally {
+            try {
+                if (ios != null)
+                    ios.close();
+            } catch (IOException e) {
+            }
+        }
+        return buffer;
+    }
+
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        Log.d(TAG, "CONNCECTED");
     }
 
     @Override

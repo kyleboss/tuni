@@ -1,5 +1,6 @@
 package tuni.tuni;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -28,13 +29,14 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, DataApi.DataListener, ChannelApi.ChannelListener {
+public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, DataApi.DataListener, ChannelApi.ChannelListener {
 
     private GoogleApiClient mGoogleApiClient;
     private int count = 0;
@@ -52,29 +54,32 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        Log.d(TAG, "CONNECTING:");
 
-        mGoogleApiClient.connect();
+
+
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
+        Log.d(TAG, "CONNECTING:");
+        mGoogleApiClient.connect();
     }
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        Toast.makeText(getApplicationContext(), "Data changed.",
+        Toast.makeText(getApplicationContext(), "Your recording is saved.",
                 Toast.LENGTH_LONG).show();
         Log.d("main", "1");
         for (DataEvent event : dataEvents) {
             Log.d("main", "2");
             if (event.getType() == DataEvent.TYPE_CHANGED &&
-                    event.getDataItem().getUri().getPath().equals("/tuner")) {
+                    event.getDataItem().getUri().getPath().equals("/recording")) {
                 // Get the Asset object
                 Log.d("main", "3");
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
-                final Asset asset = dataMapItem.getDataMap().getAsset("tunerAsset");
+                final Asset asset = dataMapItem.getDataMap().getAsset("recording");
                 Log.d(TAG, "");
                 Thread savingThread = new Thread(new Runnable() {
                     public void run() {
@@ -134,16 +139,46 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         } catch (Exception e) {
                         }
 
+                        if(file.exists())
+                            Log.d(TAG, "FILE EXISTS");
+                        else
+                            Log.d(TAG, "FILE NO EXIST");
+//                            MediaPlayer myPlayer;
+//                            myPlayer = new MediaPlayer();
+//                            myPlayer.setDataSource(file.getPath());
+//                            myPlayer.prepare();
+//                            myPlayer.start();
                         try {
-                            MediaPlayer myPlayer;
-                            myPlayer = new MediaPlayer();
-                            myPlayer.setDataSource(file.getPath());
-                            myPlayer.prepare();
-                            myPlayer.start();
 
+                            FileInputStream fis = new FileInputStream(file.getPath());
+                            File l = new File(file.getPath());
+                            byte[] buffer = new byte[1024];
+                            try {
+                                fis = new FileInputStream(file.getPath());
+
+
+                                while (fis.read(buffer)!=-1) {
+
+                                    int intSize = android.media.AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO,
+                                            AudioFormat.ENCODING_PCM_16BIT);
+                                    AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO,
+                                            AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
+                                    if (at != null) {
+                                        at.play();
+                                        at.write(buffer, 0, buffer.length);
+                                        at.stop();
+                                        at.release();
+                                    }
+                                }
+                                fis.close();
+                            } catch (Exception e) {
+                            }
+
+//                            PlayShortAudioFileViaAudioTrack(file.getPath());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
                 });
                 savingThread.start();
@@ -151,17 +186,54 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    private void PlayShortAudioFileViaAudioTrack(String filePath) throws IOException
+    {
+// We keep temporarily filePath globally as we have only two sample sounds now..
+        if (filePath==null)
+            return;
+
+//Reading the file..
+        byte[] byteData = null;
+        File file = null;
+        file = new File(filePath); // for ex. path= "/sdcard/samplesound.pcm" or "/sdcard/samplesound.wav"
+        byteData = new byte[(int) file.length()];
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream( file );
+            in.read( byteData );
+            in.close();
+
+        } catch (FileNotFoundException e) {
+// TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+// Set and push to audio track..
+        int intSize = android.media.AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
+        if (at!=null) {
+            at.play();
+// Write the byte array to the track
+            at.write(byteData, 0, byteData.length);
+            at.stop();
+            at.release();
+        }
+        else
+            Log.d("TCAudio", "audio track is not initialised ");
+
+    }
+
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "CONNECTED");
-        Toast.makeText(getApplicationContext(), "Connected.",
-                Toast.LENGTH_LONG).show();
         Wearable.DataApi.addListener(mGoogleApiClient, this);
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d(TAG, "CONNECTION SUSPEND");
+        Log.d(TAG, Integer.toString(i));
     }
 
     @Override
@@ -188,7 +260,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.d(TAG, "CONNECTION FAILED");
+        Log.d(TAG, connectionResult.toString());
     }
 
     @Override
@@ -228,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             MainActivity.this.runOnUiThread(new Runnable() {
                 public void run() {
                     Log.d("mobile", "Audio File Received");
-                    Toast.makeText(MainActivity.this, "Audio file received!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Your audio file has been saved!!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
