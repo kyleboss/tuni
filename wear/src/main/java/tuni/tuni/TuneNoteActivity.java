@@ -10,6 +10,8 @@ import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -306,51 +309,18 @@ public class TuneNoteActivity extends Activity {
                             percentDiff = PitchComparison.displayNoteOf(pitch, tuning_note.substring(0, 1).toUpperCase());
                             System.out.println("PERCENTDIFF: " + percentDiff);
 
-                            if (percentDiff == -1.0) {
-                                animateArc(Color.TRANSPARENT);
-                                updatePluckText();
-                            }
-
-                            /*
-                                some assumptions about percentDiff - if changed, update convertToCenter
-                                between 0.0 and 0.95, too flat
-                                between 0.95 and 1.05, considered good enough?
-                                between 1.05 and 2.0, too sharp
-                             */
-                            if (percentDiff >= 0.0 && percentDiff < 0.95) {
-                                animateArc(convertToStart((float) percentDiff),
-                                        convertToStop((float) percentDiff),
-                                        RED);
-                                updateTightenText();
-
-                                Log.d("wear", TIGHTEN_STRING);
-
-                            } else if (percentDiff >= 0.95 && percentDiff < 1.05) {
-                                animateArc(convertToStart((float) percentDiff),
-                                        convertToStop((float) percentDiff),
-                                        GREEN);
-                                updatePerfectText();
-
-                                Log.d("wear", PERFECT);
-
-                            } else if (percentDiff >= 1.05 && percentDiff < 2.0) {
-                                animateArc(convertToStart((float) percentDiff),
-                                        convertToStop((float) percentDiff),
-                                        ORANGE);
-                                updateLoosenText();
-
-                                Log.d("wear", LOOSEN_STRING);
-
-                            }
+                            Message msg = myHandler.obtainMessage();
+                            msg.obj = percentDiff;
+                            myHandler.sendMessage(msg);
                         }
                     } catch (Throwable t) {
-                        Log.e("AudioRecord", "Recording Failed");
+                        Log.e("AudioRecord", "Recording Failed 1");
                     }
                 }
                 recorder.stop();
                 recorder.release();
             } catch (Throwable t) {
-                Log.e("AudioRecord", "Recording Failed");
+                Log.e("AudioRecord", "Recording Failed 2");
             }
             return null;
         }
@@ -361,4 +331,56 @@ public class TuneNoteActivity extends Activity {
         protected void onPostExecute(Void result) {
         }
     }
+
+    private final static class TuneHandler extends Handler {
+        private final WeakReference<TuneNoteActivity> mActivity;
+
+        public TuneHandler(TuneNoteActivity activity) {
+            mActivity = new WeakReference<TuneNoteActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            TuneNoteActivity activity = mActivity.get();
+            double percentDiff = (double) msg.obj;
+            if (percentDiff == -1.0) {
+                activity.animateArc(Color.TRANSPARENT);
+                activity.updatePluckText();
+            }
+
+            /*
+                some assumptions about percentDiff - if changed, update convertToCenter
+                between 0.0 and 0.95, too flat
+                between 0.95 and 1.05, considered good enough?
+                between 1.05 and 2.0, too sharp
+             */
+            if (percentDiff >= 0.0 && percentDiff < 0.95) {
+                activity.animateArc(activity.convertToStart((float) percentDiff),
+                        activity.convertToStop((float) percentDiff),
+                        RED);
+                activity.updateTightenText();
+
+                Log.d("wear", TIGHTEN_STRING);
+
+            } else if (percentDiff >= 0.95 && percentDiff < 1.05) {
+                activity.animateArc(activity.convertToStart((float) percentDiff),
+                        activity.convertToStop((float) percentDiff),
+                        GREEN);
+                activity.updatePerfectText();
+
+                Log.d("wear", PERFECT);
+
+            } else if (percentDiff >= 1.05 && percentDiff < 2.0) {
+                activity.animateArc(activity.convertToStart((float) percentDiff),
+                        activity.convertToStop((float) percentDiff),
+                        ORANGE);
+                activity.updateLoosenText();
+
+                Log.d("wear", LOOSEN_STRING);
+
+            }
+        }
+    }
+
+    final Handler myHandler = new TuneHandler(this);
 }

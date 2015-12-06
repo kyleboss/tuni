@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -78,7 +79,7 @@ public class RecorderFragment extends Fragment
     private static String FONT = "Helvetica-Condensed.otf";
     private static String RECORD = "Record";
     private static String RECORDING = "Recording...";
-    private static String SAVING = "Saving...";
+    private static String SAVED= "Saved to Your Phone!";
 
     protected static final int DEFAULTSECONDS = 60;
     /* The value of these IDs is random!
@@ -158,11 +159,9 @@ public class RecorderFragment extends Fragment
 
         recordSquare.setVisibility(View.INVISIBLE);
         recordCircle.setVisibility(View.VISIBLE);
-        textView.setText(SAVING);
 
-        Intent intent = new Intent(getActivity().getApplicationContext(),
-                SaveRecordingActivity.class);
-        startActivity(intent);
+        Toast.makeText(getActivity().getApplicationContext(), SAVED, Toast.LENGTH_LONG).show();
+        resetTimer();
     }
 
     public void resetTimer() {

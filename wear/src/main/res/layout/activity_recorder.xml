@@ -29,9 +29,12 @@
         android:visibility="visible"
         android:scaleType="center"
         android:layout_alignParentTop="true"
-        android:paddingTop="40dp"
+        android:paddingBottom="40dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentEnd="false" />
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 
     <ImageButton
         android:id="@+id/recordSquareButton"
@@ -40,10 +43,14 @@
         android:src="@drawable/record_square_selector"
         android:background="@null"
         android:visibility="invisible"
-        android:scaleType="centerInside"
+        android:scaleType="center"
         android:layout_alignParentTop="true"
-        android:paddingTop="40dp"
-        android:layout_centerHorizontal="true" />
+        android:paddingBottom="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
 
     <ImageView
         android:layout_width="wrap_content"
