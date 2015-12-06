@@ -115,6 +115,7 @@ public class TuneNoteActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
         drawArc();
+        record();
     }
 
     private void drawArc() {
