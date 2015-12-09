@@ -164,10 +164,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                                     AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO,
                                             AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
                                     if (at != null) {
-                                        at.play();
-                                        at.write(buffer, 0, buffer.length);
-                                        at.stop();
-                                        at.release();
+//                                        at.play();
+//                                        at.write(buffer, 0, buffer.length);
+//                                        at.stop();
+//                                        at.release();
                                     }
                                 }
                                 fis.close();
